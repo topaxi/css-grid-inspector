@@ -1,3 +1,4 @@
 {
-  "browser.startup.page": 3
+  "browser.startup.page": 3,
+  "xpinstall.signatures.required": false
 }

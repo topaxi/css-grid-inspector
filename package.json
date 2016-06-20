@@ -1,13 +1,13 @@
 {
-  "title": "CSS Grid Visualizer",
+  "title": "CSS Grid Inspector",
   "name": "gridviz",
   "version": "1.5.0",
   "description": "Visualize grid lines defined by the CSS Grid API",
   "main": "index.js",
   "scripts": {
     "start": "npm-run-all --parallel browser watch",
-    "browser": "jpm run -b nightly --profile ./testprofile",
-    "watch": "onchange index.js data/*.js -- npm run post",
+    "browser": "jpm run -b nightly --profile ./testprofile --prefs prefs.json --no-copy",
+    "watch": "onchange index.js data/* -- npm run post",
     "init": "mkdir testprofile",
     "post": "jpm post --post-url http://localhost:8888/ && echo 'done update'"
   },

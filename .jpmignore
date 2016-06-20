@@ -4,3 +4,4 @@ testprofile
 *.xpi
 .git
 prefs.json
+docs
