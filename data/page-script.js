@@ -45,6 +45,10 @@
         console.warn("failed to process sheet with error", e);
       }
     });
+    self.port.emit('action', {
+      type: 'selectors',
+      selectors: selectors
+    });
     return selectors;
   }
 
@@ -127,6 +131,9 @@
 
     var num = 0;
     selectors.forEach(function (selector) {
+      if (state.hidden[selector]) {
+        return;
+      }
       var els = elsBySelector[selector];
       els.forEach(function (el) {
         ctx.setLineDash([12, 5]);
@@ -159,20 +166,22 @@
         var rowGaps = parseMulti(getStyle('grid-row-gap'));
 
         var pos = 0;
+        vert(pos + left);
         for (var i = 0; i <= cols.length; i++) {
           var gap = parseFloat(colGaps[i % colGaps.length], 10);
-          vert(pos + left + gap);
           pos += parseFloat(cols[i], 10);
+          vert(pos + left);
           vert(pos + left + gap);
           pos += gap;
         }
 
         var pos = 0;
+        horiz(pos + top);
         for (var i = 0; i <= rows.length; i++) {
           var gap = parseFloat(rowGaps[i % rowGaps.length], 10);
-          horiz(pos + top);
           pos += parseFloat(rows[i], 10);
           horiz(pos + top);
+          horiz(pos + top + gap);
           pos += gap;
         }
 
@@ -199,7 +208,6 @@
   }
 
   detectElements();
-  measureAndDraw();
 
   var redrawScheduled = false;
   function redraw() {
@@ -212,15 +220,21 @@
     }
   }
 
-  self.port.on('grid', function (state) {
-    if (state === 'show') {
+  var enabled = false;
+  var state;
+  self.port.on('state', function (newState) {
+    state = newState;
+    if (state.enabled) {
       overlayEl.style.display = 'block';
-      collectSelectors();
-      detectElements();
+      if (!enabled) {
+        collectSelectors();
+        detectElements();
+      }
       measureAndDraw();
     } else {
       overlayEl.style.display = 'none';
     }
+    enabled = state.enabled;
   });
 
   self.port.on('detach', function () {

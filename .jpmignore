@@ -5,3 +5,5 @@ testprofile
 .git
 prefs.json
 docs
+.jpmignore
+.gitignore

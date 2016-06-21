@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <style>
+      :root {
+        --separator: #ddd;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html, body {
+        height: 100%;
+        margin: 0;
+      }
+      .ui {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+      .selectors label {
+        line-height: 3em;
+        padding: 0 .5em;
+        display: block;
+      }
+      .selectors {
+        flex: 1;
+        overflow: auto;
+      }
+      .selectors ul {
+        padding: 0;
+        margin: 0;
+      }
+      .selectors li:first-child {
+        border-top: 1px solid var(--separator);
+      }
+      .selectors li {
+        border-bottom: 1px solid var(--separator);
+      }
+      .note {
+        font-size: .9em;
+        margin: 8px 4px;
+        text-align: center;
+      }
+      .disable {
+        line-height: 2em;
+        margin: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <section class="ui">
+      <button class="disable">Disable Grid Highlighting</button>
+      <div class="selectors">
+      </div>
+      <p class="note"><strong>⌥⌘G</strong> toggles grid highlighting</p>
+    </section>
+  </body>
+</html>

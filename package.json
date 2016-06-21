@@ -1,6 +1,6 @@
 {
   "title": "CSS Grid Inspector",
-  "name": "gridviz",
+  "name": "css-grid-inspector",
   "version": "1.5.1",
   "description": "Visualize grid lines defined by the CSS Grid API",
   "main": "index.js",
@@ -15,6 +15,9 @@
   "engines": {
     "firefox": ">=38.0a1"
   },
+  "permissions": {
+    "multiprocess": true
+  },
   "license": "MIT",
   "keywords": [
     "jetpack"
@@ -23,5 +26,8 @@
     "jpm": "^1.0.7",
     "npm-run-all": "^1.7.0",
     "onchange": "^2.2.0"
+  },
+  "dependencies": {
+    "virtual-dom": "^2.1.1"
   }
 }
