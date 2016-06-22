@@ -3,12 +3,15 @@ var { ToggleButton } = require("sdk/ui/button/toggle");
 var tabs = require('sdk/tabs');
 var panels = require('sdk/panel');
 var { Hotkey } = require("sdk/hotkeys");
+var color = require('./lib/color');
 
+var workers = {};
 var state = {
   tabs: []
 };
 
-var workers = {};
+
+// Create UI
 
 var button = ToggleButton({
   id: "show-grids",
@@ -16,7 +19,11 @@ var button = ToggleButton({
   icon: "./icon-32.png",
   badgeColor: '#0e71a4',
   badge: null,
-  onChange: handleButton
+  onChange: function () {
+    dispatch({
+      type: 'toggle'
+    });
+  }
 });
 
 var panel = panels.Panel({
@@ -40,6 +47,8 @@ var toggleHotKey = Hotkey({
   }
 });
 
+// Recieve events and update state accordingly
+
 function dispatch (event) {
   switch (event.type) {
     case 'enable':
@@ -52,7 +61,14 @@ function dispatch (event) {
       getTabState(event.tabId || tabs.activeTab.id).enabled = false;
       break;
     case 'selectors':
-      getTabState(event.tabId).selectors = event.selectors;
+      let tabState = getTabState(event.tabId);
+      tabState.selectors = event.selectors;
+      tabState.selectors.forEach(function (s) {
+        if (!tabState.color[s]) {
+          tabState.color[s] = color(tabState.colorIdx);
+          tabState.colorIdx++;
+        }
+      });
       break;
     case 'hide':
       getTabState(event.tabId || tabs.activeTab.id).hidden[event.selector] = true;
@@ -79,17 +95,24 @@ function dispatch (event) {
   update();
 }
 
+// Helper to function to fetch tab state
+// Creates the state if none yet exists
+
 function getTabState(tabId) {
   if (!state.tabs[tabId]) {
     state.tabs[tabId] = {
       id: tabId,
       enabled: false,
       selectors: [],
-      hidden: {}
+      hidden: {},
+      color: {},
+      colorIdx: 0
     };
   }
   return state.tabs[tabId];
 }
+
+// Normalize the UI to the current state
 
 function update() {
   var tabId = tabs.activeTab.id;
@@ -133,15 +156,7 @@ tabs.on('ready', function (tab) {
   workers[tab.id].port.emit('state', getTabState(tab.id));
 });
 
-function detach(tab) {
-  if (!tab) {
-    return;
-  }
-  if (workers[tab.id]) {
-    workers[tab.id].destroy();
-  }
-  workers[tab.id] = null;
-}
+// Page worker management
 
 function attach(tab) {
   var tabId = tab.id;
@@ -164,33 +179,12 @@ function attach(tab) {
   return worker;
 }
 
-// Button Events
-
-function handleButton() {
-  dispatch({
-    type: 'toggle'
-  });
-}
-
-function toggleGrid() {
-  var id = activeTab.id;
-  toggleState[id] = !toggleState[id];
-  button.state('tab', {checked: toggleState[id]});
-  if (toggleState[id]) {
-    if (id in workers) {
-      try {
-        workers[id].port.emit('grid', 'show');
-      } catch (e) {
-        attach(activeTab);
-      }
-    } else {
-      attach(activeTab);
-    }
-  } else {
-    if (workers[id]) {
-      workers[id].port.emit('grid', 'hide');
-    }
-    panel.hide();
+function detach(tab) {
+  if (!tab) {
+    return;
   }
-
+  if (workers[tab.id]) {
+    workers[tab.id].destroy();
+  }
+  workers[tab.id] = null;
 }

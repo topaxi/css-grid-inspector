@@ -1,20 +1,5 @@
 (function () {
 
-  var colors = [
-    '#05E4EE',
-    '#BB9DFF',
-    '#FFB53B',
-    '#71F362',
-    '#FF90FF',
-    '#FF90FF',
-    '#1B80FF',
-    '#FF2647'
-  ];
-
-  function color(i) {
-    return colors[i % colors.length];
-  }
-
   function collectSelectors() {
     var selectors = [];
 
@@ -139,7 +124,7 @@
         ctx.setLineDash([12, 5]);
 
         // ctx.strokeStyle = 'hsla(' + ((num * 219) % 360) + ', 100%, 55%, .8)';
-        ctx.strokeStyle = color(num);
+        ctx.strokeStyle = state.color[selector];
 
         var innerQuad = el.getBoxQuads({
           box:"content"
@@ -187,9 +172,9 @@
 
         ctx.setLineDash([0]);
         // ctx.strokeStyle = 'hsla(' + ((num * 219 + 200) % 360) + ', 100%, 55%, .9)';
-        ctx.strokeStyle = color(num);
+        ctx.strokeStyle = state.color[selector];
         // ctx.fillStyle = 'hsla(' + ((num * 219 + 200) % 360) + ', 100%, 70%, 1)';
-        ctx.fillStyle = color(num);
+        ctx.fillStyle = state.color[selector];
         var outerQuad = el.getBoxQuads({
           box: "border"
         })[0];
