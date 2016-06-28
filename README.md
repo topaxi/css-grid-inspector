@@ -10,10 +10,9 @@ This tool works only in Firefox. If you download and use [Firefox Nightly](https
 
 ## To Install This Extention:
 1. Open Firefox. [Nightly](https://nightly.mozilla.org/) is best.
-2. Go to the [release page](https://github.com/potch/gridviz/releases), and click to download the most recent version of the the .xpi file.
-3. Firefox will offer to install it for you. Say yes, please.
-4. Use it by clicking the new icon in the upper right corner of the browser.
-5. Enjoy! And [file issues](https://github.com/potch/gridviz/issues) with new ideas, feature requests, and bug reports. We need your help to make this better.
+2. Install the extension from [the Firefox Add-ons Site](https://addons.mozilla.org/en-US/firefox/addon/css-grid-inspector/)
+3. Use it by clicking the new icon in the upper right corner of the browser.
+4. Enjoy! And [file issues](https://github.com/mozilla/css-grid-inspector/issues) with new ideas, feature requests, and bug reports. We need your help to make this better.
 
 Need more help installing? Watch [this silent movie](docs/howtoinstall.gif).
 
