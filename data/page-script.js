@@ -156,7 +156,9 @@
           var gap = parseFloat(colGaps[i % colGaps.length], 10);
           pos += parseFloat(cols[i], 10);
           vert(pos + left);
-          vert(pos + left + gap);
+          if (i <= cols.length - 2) {
+            vert(pos + left + gap);
+          }
           pos += gap;
         }
 
@@ -166,7 +168,9 @@
           var gap = parseFloat(rowGaps[i % rowGaps.length], 10);
           pos += parseFloat(rows[i], 10);
           horiz(pos + top);
-          horiz(pos + top + gap);
+          if (i <= rows.length - 2) {
+            horiz(pos + top + gap);
+          }
           pos += gap;
         }
 
@@ -201,7 +205,7 @@
       setTimeout(function () {
         measureAndDraw();
         redrawScheduled = false;
-      }, 100);
+      }, 50);
     }
   }
 

@@ -14,7 +14,10 @@
             value: selector,
             checked: !state.hidden[selector]
           }),
-          (' ' + selector)
+          (' ' + selector),
+          h('div.color', {
+            style: 'background: ' + state.color[selector]
+          })
         ])
       ]);
     }));

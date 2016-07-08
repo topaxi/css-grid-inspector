@@ -13,6 +13,7 @@
       html, body {
         height: 100%;
         margin: 0;
+        background: #fff;
       }
       .ui {
         height: 100%;
@@ -23,6 +24,7 @@
         line-height: 3em;
         padding: 0 .5em;
         display: block;
+        position: relative;
       }
       .selectors {
         flex: 1;
@@ -37,6 +39,15 @@
       }
       .selectors li {
         border-bottom: 1px solid var(--separator);
+      }
+      .color {
+        width: 2em;
+        height: 2em;
+        border-radius: 1em;
+        position: absolute;
+        right: 1em;
+        top: .5em;
+        box-shadow: 0 0 1px rgba(0,0,0,.5);
       }
       .note {
         font-size: .9em;

@@ -151,7 +151,7 @@ function reset(tab) {
 }
 
 tabs.on('close', reset);
-tabs.on('ready', function (tab) {
+tabs.on('pageshow', function (tab) {
   workers[tab.id] = attach(tab);
   workers[tab.id].port.emit('state', getTabState(tab.id));
 });
