@@ -41,20 +41,22 @@
 
   var dpr = window.devicePixelRatio;
 
-  var overlayEl = document.createElement('canvas');
-  var style = {
-    pointerEvents: 'none',
-    position: 'absolute',
-    left: 0,
-    top: 0,
-    width: "100%",
-    height: "100%"
+  var overlayEl, ctx;
+  function createOverlayElement() {
+    var el = document.createElement('canvas');
+    var style = {
+      pointerEvents: 'none',
+      position: 'absolute',
+      left: 0,
+      top: 0,
+      width: "100%",
+      height: "100%"
+    }
+    for (var p in style) {
+      el.style[p] = style[p];
+    }
+    return el;
   }
-  for (var p in style) {
-    overlayEl.style[p] = style[p];
-  }
-  document.body.appendChild(overlayEl);
-  var ctx = overlayEl.getContext('2d');
 
   var elsBySelector = {};
 
@@ -213,21 +215,38 @@
   var state;
   self.port.on('state', function (newState) {
     state = newState;
+
     if (state.enabled) {
-      overlayEl.style.display = 'block';
-      if (!enabled) {
-        collectSelectors();
-        detectElements();
-      }
-      measureAndDraw();
+      enable();
     } else {
-      overlayEl.style.display = 'none';
+      disable();
     }
-    enabled = state.enabled;
   });
 
+  function enable() {
+    if (!overlayEl) {
+      overlayEl = createOverlayElement();
+    }
+    document.body.appendChild(overlayEl);
+    ctx = overlayEl.getContext('2d');
+
+    if (!enabled) {
+      collectSelectors();
+      detectElements();
+    }
+    measureAndDraw();
+    enabled = true;
+  }
+
+  function disable() {
+    if (overlayEl && overlayEl.parentNode) {
+      document.body.removeChild(overlayEl);
+    }
+    enabled = false;
+  }
+
   self.port.on('detach', function () {
-    overlayEl.parentNode.removeChild(overlayEl);
+    disable();
   });
 
   self.port.on('redraw', redraw);
