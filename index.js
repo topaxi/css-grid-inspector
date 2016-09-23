@@ -59,6 +59,7 @@ function dispatch (event) {
       break;
     case 'disable':
       getTabState(event.tabId || tabs.activeTab.id).enabled = false;
+      panel.hide();
       break;
     case 'selectors':
       let tabState = getTabState(event.tabId);
